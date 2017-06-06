@@ -1,8 +1,25 @@
 var twig = require("twig"),
     express = require('express'),
     app = express(),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    passport = require('passport'),
+    flash = require('connect-flash'),
+    morgan = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    session = require('express-session');
+
 mongoose.connect('mongodb://localhost/exiagarou');
+
+require('./config/passport')(passport);
+app.use(morgan('dev')); // log every request to the console
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(bodyParser());
+
+app.use(session({ secret: 'ILostTheGame' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
