@@ -1,0 +1,57 @@
+{% extends "layouts/base.twig" %}
+{% block title %}Creation d'une nouvelle partie{% endblock %}
+{% block content %}
+    <div class="container">
+
+        <div class="col-sm-6 col-sm-offset-3">
+
+            <h1>Creation d'une nouvelle partie</h1>
+            <!-- show any messages that come back with authentication -->
+            <div id="error_message" class="alert alert-danger" style="display:none;">
+            {% if message.length > 0 %}
+                <%= message %>
+            {% endif %}
+            </div>
+            <h2>Résumé</h2>
+            <p>Nom de la partie : {{body.game_name}}</p>
+            <p>Nombre de joeurs : <span id="nb_joueurs">{{ body.nb_joueurs_game }}</span></p>
+            <!-- LOGIN FORM -->
+            <form action="/games/validation" method="post" id="form_creation">
+                <h2>Administration</h2>
+                <div class="form-group">
+                    <label>Veuillez définir un mot de passe pour la partie</label>
+                    <input type="paswword" class="form-control" name="password">
+                </div>
+                <h2>Roles</h2>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon3">Ajouter un rôle</span>
+                    <select class="form-control" id="select_role">
+                        <option>Loup Garou</option>
+                        <option>Voyante</option>
+                        <option>Sorcière</option>
+                        <option>Cupidon</option>
+                        <option>Chasseur</option>
+                        <option>Petite fille</option>
+                        <option>Voleur</option>
+                    </select>
+                    <div class="input-group-btn">
+                        <button id='ajouter_role' class="btn btn-default" type="button">Ajouter</button>
+                    </div>
+                </div>
+                <div id="role">
+                    <div class="form-group">
+                        <label>Villageois</label>
+                        <input type="number" id="nb_villageois" class="form-control" name="nb_villageois" value={{ body.nb_joueurs_game }}>
+                    </div>
+                </div>      
+                <button type="submit" id="submit" class="btn btn-warning btn-lg">Login</button>
+            </form>
+
+        </div>
+
+        </div>
+{% endblock %}
+{% block javascript %}
+{{ parent() }}
+<script src="/static/js/create_game.js"></script>
+{% endblock %}

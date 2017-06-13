@@ -1,0 +1,52 @@
+html{
+    height: 100%;
+}
+body{
+    background-color: #BB9457;
+    color:#432818;
+    height: 100%;
+    padding-bottom:60px;
+}
+#content{
+    min-height:100%;
+    position:relative;
+}
+#footer{
+    height:60px;
+    position:absolute;
+    bottom:0;
+    width:100%;
+    display: table;
+    color:#ffe6a7;
+    background-color: #99582A;
+    border-color: #432818;
+    border: solid 0px;
+    border-top: solid 1px;
+    border-radius: 0px;
+}
+#footer span{
+    display: table-cell;
+    vertical-align: middle;
+}
+nav.navbar-default{
+    background-color: #99582A;
+    border-color: #432818;
+    border: solid 0px;
+    border-bottom: solid 1px;
+    border-radius: 0px;
+    
+}
+.navbar-default .navbar-brand{
+    color:#FFF;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>li>a{
+    color:#FFF;
+    background-color: #99582A;
+}
+
+div.container, .jumbotron, .well{
+    background-color:#FFE6A7;
+    border: none;
+}
+

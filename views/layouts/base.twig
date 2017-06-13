@@ -4,15 +4,47 @@
         {% block head %}
             <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
             <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+            <link rel="stylesheet" href="/static/css/base.css">
             <title>{% block title %}{% endblock %} - Exar-garou</title>
         {% endblock %}
     </head>
     <body>
+        {% block navbar %}
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                    <a class="navbar-brand" href="#">ExiaGarou</a>
+                </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="/">Home</a></li>
+                        {% if locals.isLogged == false %}
+                            <li><a href="/login">Connexion</a></li>
+                            <li><a href="/signup">Inscription</a></li>
+                        {% else %}
+                            <li><a href="/profile">Mon compte</a></li>
+                            <li><a href="/games/">Lobby</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                </nav>
+        {% endblock %}
         <div id="content">{% block content %}{% endblock %}</div>
         <div id="footer">
             {% block footer %}
-                &copy; Copyright 2011 by Kazadri</a>.
+                <span>&copy; Copyright 2017 by Kazadri</a>.</span>
             {% endblock %}
         </div>
     </body>
+    <footer>
+        {% block javascript %}
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        {% endblock %}
+    </footer>
 </html>
+
+
+<!-- 
+    Palette
+   https://coolors.co/6f1d1b-bb9457-432818-99582a-ffe6a7
+
+ -->
