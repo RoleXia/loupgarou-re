@@ -8,13 +8,13 @@ body{
     padding-bottom:60px;
 }
 #content{
-    min-height:100%;
+    min-height: calc(100% - 71px);
     position:relative;
 }
 #footer{
     height:60px;
+    margin-top:20px;
     position:absolute;
-    bottom:0;
     width:100%;
     display: table;
     color:#ffe6a7;
@@ -50,3 +50,9 @@ div.container, .jumbotron, .well{
     border: none;
 }
 
+.table>thead>tr>th{
+    border-bottom : 2px solid #99582A;
+}
+.table>tbody>tr>td{
+    border-top: 1px solid #000;
+}

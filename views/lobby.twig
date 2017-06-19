@@ -4,14 +4,51 @@
     <div class="container">
             <h1>Lobby</h1>
             <h2>Vos parties en cours :</h2>
-            {% if list_games.lenght == 0 %}
+            {% if list_myGames.lenght == 0 %}
                 <p>Aucune partie créer ou rejoint</p>
             {% else %}
-                {% for key,value in list_games %}
-                    <p>Value : {{ value }}</p>
-                {% endfor %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <th>Nom</th>
+                            <th>Status</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                        {% for key,value in list_myGames %}
+                            <tr>
+                                <td>{{ value.name }}</td>
+                                <td>{{ value.status}}</td>
+                                <td><a href="#">Voir</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% endif %}
             <h2>Rejoindre une partie</h2>
+            {% if list_otherGames.lenght == 0 %}
+                <p>Aucune partie créer ou rejoint</p>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <th>Nom</th>
+                            <th>Status</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                        {% for key,value in list_otherGames %}
+                            <tr>
+                                <td>{{ value.name }}</td>
+                                <td>{{ value.status}}</td>
+                                <td><a href="#">Rejoindre</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
             <h2>Créer une nouvelle partie</h2>
             <form action="/games/new" class="form-inline" method="post">
                 <div class="form-group">

@@ -17,16 +17,17 @@
             <p>Nombre de joeurs : <span id="nb_joueurs">{{ body.nb_joueurs_game }}</span></p>
             <!-- LOGIN FORM -->
             <form action="/games/validation" method="post" id="form_creation">
+                <input type="hidden" name="game_name" value ="{{ body.game_name }}">
+                <input type="hidden" name="nb_joueurs_game" value ="{{ body.nb_joueurs_game }}">
                 <h2>Administration</h2>
                 <div class="form-group">
                     <label>Veuillez définir un mot de passe pour la partie</label>
-                    <input type="paswword" class="form-control" name="password">
+                    <input id="game_password" type="paswword" class="form-control" name="password">
                 </div>
                 <h2>Roles</h2>
                 <div class="input-group">
                     <span class="input-group-addon" id="basic-addon3">Ajouter un rôle</span>
                     <select class="form-control" id="select_role">
-                        <option>Loup Garou</option>
                         <option>Voyante</option>
                         <option>Sorcière</option>
                         <option>Cupidon</option>
@@ -42,6 +43,10 @@
                     <div class="form-group">
                         <label>Villageois</label>
                         <input type="number" id="nb_villageois" class="form-control" name="nb_villageois" value={{ body.nb_joueurs_game }}>
+                    </div>
+                     <div class="form-group">
+                        <label>Loup-garous</label>
+                        <input type="number" id="nb_lg" class="form-control" name="nb_lg" value="0">
                     </div>
                 </div>      
                 <button type="submit" id="submit" class="btn btn-warning btn-lg">Login</button>

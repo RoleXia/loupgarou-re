@@ -10,17 +10,18 @@
   "author": "Kazadri",
   "license": "ISC",
   "dependencies": {
-    "express" : "~4.0.0",                       
-    "mongoose" : "~3.8.1",          
-    "passport" : "~0.1.17",         
-    "passport-local" : "~0.1.6",
-    "connect-flash" : "~0.1.1",     
-    "bcrypt" : "latest",
-    "morgan": "~1.0.0",
+    "async": "^2.4.1",
+    "bcrypt": "latest",
     "body-parser": "~1.0.0",
+    "connect-flash": "~0.1.1",
     "cookie-parser": "~1.0.0",
-    "method-override": "~1.0.0",
+    "express": "~4.0.0",
     "express-session": "~1.0.0",
+    "method-override": "~1.0.0",
+    "mongoose": "~3.8.1",
+    "morgan": "~1.0.0",
+    "passport": "~0.1.17",
+    "passport-local": "~0.1.6",
     "twig": "^1.10.5"
   }
 }
