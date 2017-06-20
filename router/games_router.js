@@ -44,16 +44,18 @@ router.get('/', function (req, res) {
 		}]
 	}).exec(function (err, gamesList) {
 		async.each(gamesList, function(game,callback){
-			console.log(game);
-			userIsIn = false;
+			var userIsIn = false;
+			var count = 0;
 			game.users.forEach(function(user){
-				if(user.id = req.user._id){
+				count++;
+				if(user.id.equals(req.user._id)){
 					userIsIn = true;
 				}
 			});
 			if(userIsIn){
 				req.myGames.push(game);
 			}else{
+				game.nb_joueurs_actuel = count;
 				req.otherGames.push(game);
 			}
 			callback();
@@ -103,6 +105,19 @@ router.post('/validation', function (req, res) {
 	console.log(game);
 	game.save();
 	res.redirect('/games/');
+});
+router.get('/join/:game_id', function(req, res){
+	var games_id = req.params.game_id;
+	games.findOne({_id : games_id}, function(err,game){
+		game.users.push({
+			id : req.user._id,
+			role : "undefined",
+			alive : true
+		});
+		console.log(game);
+		game.save();
+		res.redirect('/games/');
+	});
 });
 
 module.exports = router;
