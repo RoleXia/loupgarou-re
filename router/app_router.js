@@ -21,6 +21,7 @@ router.use(function(req, res, next) {
     console.log("LOGGED : ", req.locals.isLogged);
     // continue doing what we were doing and go to the route
     next(); 
+    //coucou
 });
 
 router.get('/', function(req, res){
