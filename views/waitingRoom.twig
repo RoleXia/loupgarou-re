@@ -18,7 +18,10 @@
             {% endfor %}
         </ul>
         {% if game.users|length == game.nb_joueurs and admin %}
-            <a href="#">Lancer la partie</a>
+            <form action='/games/attribute' method='post'>
+                <input type="hidden" name="game_id" value={{game._id}}>
+                <input type="submit" value="Lancer la partie">
+            </form>
         {% endif %}
     </div>
 {% endblock %}

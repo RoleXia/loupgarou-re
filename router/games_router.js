@@ -125,19 +125,7 @@ router.get('/:game_id',function(req,res){
 			game = game.toObject();
 			if(game.status == "En attente"){
 				var admin = req.user._id.toString() == game.users[0].id._id.toString();
-				var count = 0;
-				var max = Object.keys(game).length;
-				roles = {};
-				for(var key in game){
-					if(count<7){
-						count++;
-					}else if (count >= max-2){
-						break;
-					}else{
-						roles[key.substr(3)] = game[key];
-						count++;
-					}
-				}
+				var roles = getRolesInGame(game);
 				console.log(game);
 				console.log(game.users[0]);
 				res.render('waitingRoom.twig', {
@@ -147,6 +135,61 @@ router.get('/:game_id',function(req,res){
 					admin : admin
 				});
 			}
+			else{
+				res.render('game.twig', {
+					user: req.user,
+					game : game
+				});
+			}
 	});
 });
+
+router.post('/attribute', function(req,res){
+	game_id = req.body.game_id;
+	games.findOne({_id : game_id}).populate('users.id').exec(function(err,gameBis){
+		game = gameBis.toObject();
+		var roles = getRolesInGame(game);
+		var roleArray = [];
+		for(role in roles){
+			roleArray.push(role);
+		}
+		/*
+		** Attribution du role aléatoirement
+		*/
+		for(player in game.users){
+			random = getRandomInt(0,roleArray.length-1);
+			game.users[player].role = roleArray[random];
+			roleArray.splice(random,1);
+		}
+		gameBis.users = game.users;
+		gameBis.status = "En jeu";
+		gameBis.save(function(err,updatedGame){
+			if (err) return handleError(err);
+			res.send(updatedGame);
+			res.redirect('/games/');
+		});
+	});
+});
+
+function getRolesInGame(game){
+	var count = 0;
+	var max = Object.keys(game).length;
+	roles = {};
+	for(var key in game){
+		if(count<7){
+			count++;
+		}else if (count >= max-2){
+			break;
+		}else{
+			roles[key.substr(3)] = game[key];
+			count++;
+		}
+	}
+	return roles;
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 module.exports = router;
