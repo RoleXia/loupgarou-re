@@ -1,0 +1,24 @@
+{% extends "layouts/base.twig" %}
+{% block title %}Index{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1>{{game.name}}</h1>
+        <p>Status : {{game.status}}</p>
+        <p>Joueurs inscrit : {{game.users|length}}/{{game.nb_joueurs}}</p>
+        <p>Rappel des roles :</p>
+        <ul>
+            {% for key, role in roles %}
+            <li>{{key}} : {{role}} </li>
+            {% endfor %}
+        </ul>
+        <p>Membres :</p>
+        <ul>
+            {% for user in game.users %}
+            <li> {{user.id.local.pseudo}} </li>
+            {% endfor %}
+        </ul>
+        {% if game.users|length == game.nb_joueurs and admin %}
+            <a href="#">Lancer la partie</a>
+        {% endif %}
+    </div>
+{% endblock %}

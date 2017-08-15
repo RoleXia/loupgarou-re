@@ -52,10 +52,10 @@ router.get('/', function (req, res) {
 					userIsIn = true;
 				}
 			});
+			game.nb_joueurs_actuel = count;
 			if(userIsIn){
 				req.myGames.push(game);
-			}else{
-				game.nb_joueurs_actuel = count;
+			}else if(game.nb_joueurs!=game.nb_joueurs_actuel){	
 				req.otherGames.push(game);
 			}
 			callback();
@@ -119,5 +119,34 @@ router.get('/join/:game_id', function(req, res){
 		res.redirect('/games/');
 	});
 });
-
+router.get('/:game_id',function(req,res){
+	var games_id = req.params.game_id;
+		games.findOne({_id : games_id}).populate('users.id').exec(function(err,game){
+			game = game.toObject();
+			if(game.status == "En attente"){
+				var admin = req.user._id.toString() == game.users[0].id._id.toString();
+				var count = 0;
+				var max = Object.keys(game).length;
+				roles = {};
+				for(var key in game){
+					if(count<7){
+						count++;
+					}else if (count >= max-2){
+						break;
+					}else{
+						roles[key.substr(3)] = game[key];
+						count++;
+					}
+				}
+				console.log(game);
+				console.log(game.users[0]);
+				res.render('waitingRoom.twig', {
+					user: req.user,
+					game : game,
+					roles : roles,
+					admin : admin
+				});
+			}
+	});
+});
 module.exports = router;
