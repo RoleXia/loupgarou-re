@@ -34,6 +34,16 @@ var app_router = require('./router/app_router.js');
 app.use('/games', games_router);
 app.use('/', app_router);
 
+var io = require('socket.io').listen(app.listen(8080));
 
+/*
+** SOCKET.IO
+*/
 
-app.listen(8080);
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.emit('message', { message: 'welcome to the chat' });
+    socket.on('send', function (data) {
+        io.sockets.emit('message', data);
+    });
+});

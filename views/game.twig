@@ -3,5 +3,17 @@
 {% block content %}
     <div class="container">
         <h1>{{game.name}}</h1>
+        <p>Bonjour <label id="name">{{me.id.local.pseudo}}</label></p>
+        <p>Pour rappel vous êtes : {{me.role}}</p>
+
+        <h2>Chat</h2>
+        <div id="chat" style="width: 500px; height: 300px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll;">
+        </div>
+        <label id="control"><input id="field" type="text" name="message"><input id="send" type="submit" value="Send"></label>
     </div>
+{% endblock %}
+{% block javascript %}
+{{ parent() }}
+<script src="/static/js/chat.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 {% endblock %}

@@ -6,6 +6,7 @@ var express = require('express'),
 	games = require('../models/game.js'),
 	users = require('../models/user.js'),
 	bodyParser = require('body-parser');
+	io = require('socket.io');
 require('../config/passport')(passport);
 
 
@@ -136,9 +137,18 @@ router.get('/:game_id',function(req,res){
 				});
 			}
 			else{
+				var me;
+				for(i in game.users){
+					if(game.users[i].id._id == req.user._id.toString()){
+						me = game.users[i];
+						break;
+					}
+				}
+				console.log(me);
 				res.render('game.twig', {
 					user: req.user,
-					game : game
+					game : game,
+					me : me
 				});
 			}
 	});
@@ -170,6 +180,11 @@ router.post('/attribute', function(req,res){
 		});
 	});
 });
+
+
+/*
+** FUNCTION
+*/
 
 function getRolesInGame(game){
 	var count = 0;
