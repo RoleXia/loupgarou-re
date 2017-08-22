@@ -92,14 +92,15 @@ router.post('/validation', function (req, res) {
 		users : [{
 			id : req.user._id,
 			role : "undefined",
-			alive : true
+			alive : true,
+			vote : "undefined"
 		}]
 	};
 	var re = new RegExp('^nb_((?!joueurs_game).)*$');
-	for (var i in req.body) {
-		var name = i.match(re);
+	for (var role in req.body) {
+		var name = role.match(re);
 		if (name != null) {
-			temps[i] = req.body[i];
+			temps[role] = req.body[role];
 		}
 	}
 	var game = new games(temps);
@@ -113,7 +114,8 @@ router.get('/join/:game_id', function(req, res){
 		game.users.push({
 			id : req.user._id,
 			role : "undefined",
-			alive : true
+			alive : true,
+			vote : "undefined"
 		});
 		console.log(game);
 		game.save();
@@ -138,17 +140,25 @@ router.get('/:game_id',function(req,res){
 			}
 			else{
 				var me;
+				var vote = {};
 				for(i in game.users){
+					if(game.users[i].vote != "undefined"){
+						if(game.users[i].vote in vote){
+							vote[game.users[i].vote] += 1;
+						}else{
+							vote[game.users[i].vote] = 1;
+						}
+					}
 					if(game.users[i].id._id == req.user._id.toString()){
 						me = game.users[i];
-						break;
 					}
 				}
-				console.log(me);
+				console.log(vote);
 				res.render('game.twig', {
 					user: req.user,
 					game : game,
-					me : me
+					me : me,
+					vote : vote
 				});
 			}
 	});
@@ -180,7 +190,28 @@ router.post('/attribute', function(req,res){
 		});
 	});
 });
-
+router.post('/vote/v', function(req,res){
+	console.log("vote de journée");
+	game_id = req.body.game_id;
+	var vote = req.body.vote;
+	games.findOne({_id : game_id}).populate('users.id').exec(function(err,game){
+		for(player in game.users){
+			console.log(player);
+			if(game.users[player].id.local.pseudo){
+				game.users[player].vote = vote;
+				console.log("vote = "+vote);
+				console.log("player[vote] = "+game.users[player].vote);
+				break;
+			}
+		}
+		console.log(game);
+		game.save(function(err,updatedGame){
+			if (err) return handleError(err);
+			res.send(updatedGame);
+			res.redirect('/games/'+game_id);
+		});
+	});
+});
 
 /*
 ** FUNCTION

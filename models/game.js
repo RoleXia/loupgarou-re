@@ -14,7 +14,8 @@ var gameSchema = mongoose.Schema({
         users               : [{
                 id : {type : mongoose.Schema.Types.ObjectId, ref: 'User'},
                 role : String,
-                alive : Boolean
+                alive : Boolean,
+                vote : String
         }]
 }, { strict : false});
 

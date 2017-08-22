@@ -3,17 +3,40 @@
 {% block content %}
     <div class="container">
         <h1>{{game.name}}</h1>
+        <label id="gameId" style="display: none">{{game._id}}</label>
         <p>Bonjour <label id="name">{{me.id.local.pseudo}}</label></p>
         <p>Pour rappel vous êtes : {{me.role}}</p>
 
-        <h2>Chat</h2>
-        <div id="chat" style="width: 500px; height: 300px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll;">
+        <div>
+            <h3>Joueur en vie</h3>
+            <ul>
+                {% for key,joueur in game.users %}
+                    {% if joueur.alive %}
+                        <li class="joueur_en_vie">{{joueur.id.local.pseudo}}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
         </div>
-        <label id="control"><input id="field" type="text" name="message"><input id="send" type="submit" value="Send"></label>
+        <div id="zoneChat">
+            <h2>Chat</h2>
+            <div id="chat" style="width: 500px; height: 300px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: scroll;">
+            </div>
+            <label id="control"><input id="field" type="text" name="message"><input id="send" type="submit" value="Send"></label>
+        </div>
+        <div id="action">
+            {% if vote|length != 0 %}
+                <ul>
+                {% for joueur,nbVote in vote %}
+                    <li>{{joueur}} : {{nbVote}}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
 {% block javascript %}
 {{ parent() }}
 <script src="/static/js/chat.js"></script>
+<script src="/static/js/game.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 {% endblock %}
