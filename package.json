@@ -11,10 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.4.1",
-    "bcrypt": "latest",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.0.0",
     "connect-flash": "~0.1.1",
     "cookie-parser": "~1.0.0",
+    "cron": "^1.2.1",
     "express": "~4.0.0",
     "express-session": "~1.0.0",
     "method-override": "~1.0.0",

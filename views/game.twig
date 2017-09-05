@@ -31,6 +31,7 @@
                 {% endfor %}
                 </ul>
             {% endif %}
+            <p>Test du vote<form action="test/cron/" method="post"><input type="hidden" name="game_id" value="{{ game._id }}"><input id="test" type="submit" value="Test"></form></p>
         </div>
     </div>
 {% endblock %}

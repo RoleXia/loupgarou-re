@@ -7,6 +7,7 @@ var express = require('express'),
 	users = require('../models/user.js'),
 	bodyParser = require('body-parser');
 	io = require('socket.io');
+	cron = require('cron').CronJob;
 require('../config/passport')(passport);
 
 
@@ -153,7 +154,6 @@ router.get('/:game_id',function(req,res){
 						me = game.users[i];
 					}
 				}
-				console.log(vote);
 				res.render('game.twig', {
 					user: req.user,
 					game : game,
@@ -195,16 +195,15 @@ router.post('/vote/v', function(req,res){
 	game_id = req.body.game_id;
 	var vote = req.body.vote;
 	games.findOne({_id : game_id}).populate('users.id').exec(function(err,game){
-		for(player in game.users){
-			console.log(player);
-			if(game.users[player].id.local.pseudo){
-				game.users[player].vote = vote;
-				console.log("vote = "+vote);
-				console.log("player[vote] = "+game.users[player].vote);
+        gameObj = game.toObject();
+		for(player in gameObj.users){
+			console.log(gameObj.users[player].id._id + " != " + req.user._id);
+			if(gameObj.users[player].id._id == req.user._id.toString()){
+				gameObj.users[player].vote = vote;
 				break;
 			}
 		}
-		console.log(game);
+		game.users = gameObj.users;
 		game.save(function(err,updatedGame){
 			if (err) return handleError(err);
 			res.send(updatedGame);
@@ -212,6 +211,52 @@ router.post('/vote/v', function(req,res){
 		});
 	});
 });
+router.post('/test/cron', function(req,res){
+	console.log('Ici on test');
+	game_id = req.body.game_id;
+	eliminationVillageois(game_id);
+    res.redirect('/games/'+game_id);
+});
+
+/*
+** Tache cron
+ */
+
+function eliminationVillageois(game_id){
+    games.findOne({_id : game_id}).populate('users.id').exec(function(err,game) {
+        gameObj = game.toObject();
+        var vote = {};
+        for (i in gameObj.users){
+            if (gameObj.users[i].vote != "undefined") {
+                if (gameObj.users[i].vote in vote) {
+                    vote[gameObj.users[i].vote] += 1;
+                } else {
+                    vote[gameObj.users[i].vote] = 1;
+                }
+            }
+        }
+        var max = [{"undefined":0}];
+        for(var v in vote)
+		{
+			for(var m in max[0]){
+				if(vote[v]>max[0][m]){
+					max=[{ [v] : vote[v] }];
+                    console.log(max);
+					break;
+				}else if(vote[v]==max[0][m]){
+					max[max.length]={ [v] : vote[v] };
+                    console.log(max);
+					break;
+				}
+			}
+		}
+		if(max.length != 1){
+            console.log("Le mort est : "+ Object.keys(max[Math.floor((Math.random() * max.length))])[0]);
+		}else{
+            console.log("Le mort est : "+ Object.keys(max[0])[0]);
+		}
+    });
+}
 
 /*
 ** FUNCTION
